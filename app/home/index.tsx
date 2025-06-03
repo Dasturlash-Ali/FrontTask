@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { HomeWrapper } from "./Home.styled";
 import { VscSettings } from "react-icons/vsc";
 import { SearchButton } from "../../components/Button/Button.style";
@@ -8,6 +8,9 @@ import LargeCard from "../../components/Cards/LargeCard";
 import { title } from "process";
 import { useGetAllPhones } from "../../hooks";
 import { useRouter } from "next/router";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Home = () => {
   const { data: phones } = useGetAllPhones();
@@ -179,23 +182,74 @@ const Home = () => {
     router.push(`/productDetail/${id}`);
   };
 
-  const productSectionRef = useRef<HTMLDivElement>(null)
+  const productSectionRef = useRef<HTMLDivElement>(null);
 
   const scrollToProducts = () => {
-    productSectionRef.current?.scrollIntoView({behavior: "smooth"});
+    productSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  // Qidiruv funksiyasi uchun state
+  const [searchQuery, setSearchQuery] = useState(""); // Qidiruv so‘rovi
+  const [results, setResults] = useState<string[]>([]); // Qidiruv natijalari
+  const [hasSearched, setHasSearched] = useState(false);
+
+  const handleSearch = () => {
+    setHasSearched(true); // ✅ qidiruv bo‘ldi deb belgilaymiz
+  
+    if (!searchQuery.trim()) {
+      setResults([]);
+      return;
+    }
+  
+    const mockResults = [
+      "Telefon 1",
+      "Telefon 2",
+      "Telefon 3",
+      "Telefon 4",
+    ].filter((item) => item.toLowerCase().includes(searchQuery.toLowerCase()));
+  
+    if (mockResults.length === 0) {
+      toast.info("Natija mavjud emas");
+    }
+  
+    setResults(mockResults);
+  };
+
+  
+  
 
   return (
     <div className="container">
+      <ToastContainer />
       <HomeWrapper>
         <div className="search-input container">
           <IoIosSearch className="searchIcon" />
-          <input type="text" placeholder="Type e.g Slots games" />
+          <input
+            type="text"
+            placeholder="Type e.g Slots games"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <div className="settings-icon">
             <VscSettings />
           </div>
-          <SearchButton>Поиск</SearchButton>
+          <SearchButton onClick={handleSearch}>Поиск</SearchButton>
         </div>
+
+        {/* Qidiruv natijalarini ko‘rsatish */}
+        <div className="search-results">
+          {results.length > 0 ? (
+          <ul>
+            {results.map((result, index) => (
+              <li key={index}>{result}</li>
+            ))}
+          </ul>
+          ) : hasSearched ? (
+            <p></p>
+          ) : null}
+        </div>
+
+
         <h3>Категории</h3>
         <div onClick={scrollToProducts} className="cards-group container">
           {images.map((item, i) => (
