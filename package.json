@@ -4,7 +4,6 @@
   "nodeVersion": "v22.14.0",
   "private": true,
   "scripts": {
-    "postinstall": "npm install --legacy-peer-deps",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
