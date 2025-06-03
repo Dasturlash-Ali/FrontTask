@@ -5,7 +5,6 @@ import {
   TabWrapper,
 } from "./addressSection.style";
 import { useDistrict, useRegions } from "../../../../hooks";
-import { YMaps, Map, Placemark } from "react-yandex-maps";
 
 const AddressSection = (props: any) => {
   const { formData, setFormData } = props;
@@ -21,7 +20,7 @@ const AddressSection = (props: any) => {
   );
 
   const handleMapClick = (e: any) => {
-    const coords = e.get("coords"); // [latitude, longitude]
+    const coords = e.get("coords");
     setSelectedCoords(coords);
 
     setFormData({
@@ -103,38 +102,7 @@ const AddressSection = (props: any) => {
               position: "relative",
             }}
           >
-            <YMaps>
-              {isMapLoading && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    background: "rgba(255,255,255,0.7)",
-                    zIndex: 10,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Карта загружается...
-                </div>
-              )}
-              <Map
-                defaultState={{ center: defaultCenter, zoom: 12 }}
-                width="100%"
-                height="100%"
-                modules={[]}
-                onClick={handleMapClick}
-                onLoad={() => setIsMapLoading(false)}
-              >
-                <Placemark geometry={selectedCoords || defaultCenter} />
-              </Map>
-            </YMaps>
+            
           </div>
         </SectionWrapper2>
       )}
