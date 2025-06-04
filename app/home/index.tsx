@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
   const { data: phones } = useGetAllPhones();
+
   const images = [
     { img: "/images/apple.svg", title: "Apple" },
     { img: "/images/huawei.svg", title: "Huawei" },
@@ -178,6 +179,10 @@ const Home = () => {
 
   const router = useRouter();
 
+  const handleClickFilterPage = () => {
+    router.push('/filter')
+  }
+
   const handleClick = (id: number) => {
     router.push(`/productDetail/${id}`);
   };
@@ -231,7 +236,7 @@ const Home = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <div className="settings-icon">
-            <VscSettings />
+            <VscSettings onClick={handleClickFilterPage}/>
           </div>
           <SearchButton onClick={handleSearch}>Поиск</SearchButton>
         </div>
